@@ -3,27 +3,38 @@ import {
   BadgeCheck,
   BriefcaseBusiness,
   Container,
+  Coffee,
   Leaf,
+  MapPin,
   ShieldCheck,
+  Sun,
   TimerReset,
   TrendingUp,
+  Truck,
   Ship,
+  ChevronRight,
+  Star,
+  Mail,
+  Phone,
+  Clock,
 } from 'lucide-react'
 import Header from './components/Header.jsx'
 import HeroSlider from './components/HeroSlider.jsx'
 import Reveal from './components/Reveal.jsx'
 import SectionHeading from './components/SectionHeading.jsx'
-import GalleryLightbox from './components/GalleryLightbox.jsx'
 import InquiryForm from './components/InquiryForm.jsx'
+import AboutUs from './components/AboutUs.jsx'
+// import OperationalGallery from './components/OperationalGallery.jsx'
+
 import {
   coffeeSpecs,
-  galleryItems,
   heroSlides,
-  impactStats,
   navLinks,
   partnerBenefits,
   trustPoints,
   workflowSteps,
+  companyStats,
+  testimonials,
 } from './content/siteContent.js'
 
 const iconMap = {
@@ -35,11 +46,13 @@ const iconMap = {
   briefcase: BriefcaseBusiness,
   shield: ShieldCheck,
   ship: Ship,
+  MapPin: MapPin,
+  Leaf: Leaf,
+  Sun: Sun,
+  Truck: Truck,
 }
 
 function App() {
-  const [lightboxIndex, setLightboxIndex] = useState(-1)
-
   return (
     <div className="site-shell">
       <Header links={navLinks} />
@@ -65,107 +78,90 @@ function App() {
           </div>
         </section>
 
-        <section id="market-position" className="section-shell section-story">
-          <div className="shell two-column">
-            <Reveal>
-              <SectionHeading
-                eyebrow="Who We Are"
-                title="Premium specialty coffee for the U.S. wholesale market"
-                description="Savana Sips partners with U.S. importers, roasters, and distributors who want consistent specialty-grade coffee backed by full supply-chain transparency and dedicated sourcing support."
-              />
-            </Reveal>
-
-            <Reveal className="story-panel" delay={0.12}>
-              <p>
-                We focus on one thing: connecting U.S. buyers with exceptional coffee that performs
-                in their programs. Every lot is selected for cup quality, graded for consistency,
-                and prepared with export-ready documentation.
-              </p>
-              <ul className="story-list">
-                <li>Dedicated wholesale account management</li>
-                <li>Specialty-grade sourcing with full traceability</li>
-                <li>Flexible lot sizes for distributors of every scale</li>
-              </ul>
-            </Reveal>
-          </div>
-        </section>
+        <AboutUs />
 
         <section id="coffee-specs" className="section-shell section-specs">
+          <div className="bg-decoration bg-decoration-1">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50,0 C80,0 100,20 100,50 C100,80 80,100 50,100 C20,100 0,80 0,50 C0,20 20,0 50,0 Z M50,10 C25,10 10,25 10,50 C10,75 25,90 50,90 C75,90 90,75 90,50 C90,25 75,10 50,10 Z" />
+            </svg>
+          </div>
+          <div className="bg-decoration bg-decoration-2">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50,0 C60,0 80,10 90,30 C100,50 90,80 70,90 C50,100 20,90 10,70 C0,50 10,20 30,10 C40,5 45,0 50,0 Z M50,90 C70,90 90,70 90,50 C90,30 70,10 50,10 C30,10 10,30 10,50 C10,70 30,90 50,90 Z" />
+            </svg>
+          </div>
           <div className="shell">
             <Reveal>
               <SectionHeading
-                eyebrow="Coffee Specs"
-                title="Specialty-grade profiles for premium wholesale programs"
-                description="From high-altitude AA selections to carefully processed Arabica lots, each profile is built for repeat commercial performance in premium channels."
+                eyebrow="Our Coffees"
+                title="Savana Sips Coffee Selection"
+                align="center"
               />
             </Reveal>
 
-            <div className="spec-grid">
-              {coffeeSpecs.map((spec, index) => (
-                <Reveal className="spec-card" delay={index * 0.08} key={spec.id}>
-                  <p className="spec-kicker">{spec.subtitle}</p>
-                  <h3>{spec.name}</h3>
-                  <ul>
-                    {spec.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                  <p className="spec-fit">{spec.buyerFit}</p>
-                </Reveal>
-              ))}
+            <div className="menu-container">
+              <div className="menu-grid">
+                {coffeeSpecs.map((spec, index) => (
+                  <Reveal className="menu-item" delay={index * 0.08} key={spec.id}>
+                    <div className="menu-item-image">
+                      <img src={spec.image} alt={spec.name} />
+                    </div>
+                    <div className="menu-item-content">
+                      <div className="menu-item-header">
+                        <h3 className="menu-item-title">{spec.name}</h3>
+                        <p className="menu-item-desc">{spec.subtitle}</p>
+                      </div>
+                      
+                      <div className="menu-price-row">
+                        <span className="menu-item-dots" />
+                        <span className="menu-item-price">{spec.price}</span>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         <section id="sourcing" className="section-shell section-workflow">
-          <div className="shell">
-            <Reveal>
+          <div className="shell about-kaffen-layout">
+            <Reveal className="about-kaffen-content">
               <SectionHeading
                 eyebrow="Farm to Export"
                 title="From cherry to shipment, quality at every step"
-                description="Our six-step sourcing workflow ensures every lot meets specialty standards before it reaches your warehouse."
+                align="left"
               />
-            </Reveal>
-
-            <div className="workflow-grid">
-              {workflowSteps.map((step, index) => (
-                <Reveal className="workflow-card" delay={index * 0.06} key={step.id}>
-                  <span className="workflow-step">{step.step}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.copy}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="distribution" className="section-shell section-benefits">
-          <div className="shell benefits-layout">
-            <Reveal className="benefits-copy">
-              <SectionHeading
-                eyebrow="Why Partner with Savana Sips"
-                title="Built for serious wholesale partnerships"
-                description="Everything we do centers on making your buying process smoother — from first inquiry to recurring supply. Quality coffee, reliable sourcing, clear communication."
-              />
-              <div className="quote-panel">
-                <p>
-                  "The best wholesale relationships start with a shared commitment to quality and
-                  transparency. That's how we operate."
-                </p>
+              <p className="about-kaffen-desc">
+                High-potential green coffee sourcing requires precision. We manage the entire chain—from cherry selection to dry milling and export coordination—so your sourcing conversations focus entirely on cup quality and reliability.
+              </p>
+              
+              <div className="about-feature-block">
+                <div className="feature-icon-wrap">
+                  <Coffee size={32} />
+                </div>
+                <div className="feature-text">
+                  <h4>100% Export Grade</h4>
+                  <p>Meticulous sorting and preparation for specialty buyers</p>
+                </div>
               </div>
+
+              <a className="button button-primary" href="#inquiry" style={{ marginTop: '30px' }}>
+                START SOURCING <ChevronRight size={18} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />
+              </a>
             </Reveal>
 
-            <div className="benefit-grid">
-              {partnerBenefits.map((benefit, index) => {
-                const Icon = iconMap[benefit.icon]
-
+            <div className="sourcing-offset-grid">
+              {workflowSteps.map((step, index) => {
+                const Icon = iconMap[step.icon]
                 return (
-                  <Reveal className="benefit-card" delay={index * 0.08} key={benefit.id}>
-                    <span className="benefit-icon">
-                      <Icon size={18} />
-                    </span>
-                    <h3>{benefit.title}</h3>
-                    <p>{benefit.copy}</p>
+                  <Reveal className="workflow-card-staggered" delay={index * 0.12} key={step.id}>
+                    <div className="workflow-icon-badge">
+                      <Icon size={36} />
+                    </div>
+                    <h3>{step.title}</h3>
+                    <p>{step.copy}</p>
                   </Reveal>
                 )
               })}
@@ -173,54 +169,122 @@ function App() {
           </div>
         </section>
 
-        <section id="impact" className="section-shell section-impact">
-          <div className="shell impact-layout">
-            <Reveal>
-              <SectionHeading
-                eyebrow="Impact & Ethical Sourcing"
-                title="Origin credibility that supports premium positioning"
-                description="Fair compensation for farmers, sustainable practices at every stage, and full traceability — because long-term supply quality starts at the source."
+        <section id="distribution" className="section-shell section-whychoose">
+          <div className="shell whychoose-layout">
+            <Reveal className="whychoose-image-col">
+              <img
+                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80"
+                alt="Specialty coffee preparation"
+                className="whychoose-image"
               />
+              <div className="whychoose-floating-quote">
+                <img 
+                  src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=200&q=80" 
+                  alt="CEO placeholder" 
+                />
+                <p>
+                  "Our mission is to bridge the gap between dedicated Kenyan producers and the world's most uncompromising roasters."
+                </p>
+              </div>
             </Reveal>
 
-            <div className="impact-grid">
-              {impactStats.map((stat, index) => (
-                <Reveal className="impact-card" delay={index * 0.08} key={stat.id}>
-                  <strong>{stat.value}</strong>
-                  <h3>{stat.label}</h3>
-                  <p>{stat.copy}</p>
-                </Reveal>
-              ))}
-            </div>
+            <Reveal className="whychoose-text-col" delay={0.12}>
+              <SectionHeading
+                eyebrow="Why Choose Us"
+                title="Your trusted coffee partner"
+                description="We make sourcing simple — great coffee, clear pricing, and reliable supply every time."
+              />
 
-            <Reveal className="impact-banner" delay={0.16}>
-              <p>
-                Our highland Kenyan lots bring distinctive cup character that adds genuine
-                market distinction to your catalog — backed by transparent sourcing from
-                cooperatives we have worked with for years.
-              </p>
+              <div className="whychoose-features">
+                {partnerBenefits.map((benefit) => {
+                  const Icon = iconMap[benefit.icon]
+                  return (
+                    <div className="whychoose-feature" key={benefit.id}>
+                      <span className="whychoose-feature-icon">
+                        <Icon size={24} />
+                      </span>
+                      <div>
+                        <h3>{benefit.title}</h3>
+                        <p>{benefit.copy}</p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <a className="button button-primary" href="#inquiry">
+                Explore More
+              </a>
             </Reveal>
           </div>
         </section>
 
-        <section className="section-shell section-gallery">
+
+
+        {/* 
+          NOTE: The Operational Gallery section has been moved to its own component (src/components/OperationalGallery.jsx). 
+          It is currently hidden per client request. Uncomment the line below to restore it to the landing page.
+          
+          <OperationalGallery /> 
+        */}
+
+        <section className="section-shell section-stats">
+          <div className="bg-decoration" style={{ top: '-10%', right: '-5%', opacity: 0.04 }}>
+            <svg width="400" height="400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1.8 9.2A7 7 0 0 1 11 20Z"></path>
+              <path d="M11 20v-5"></path>
+              <path d="M11 15c0-1-2.5-2-2.5-2S6 12 6 11"></path>
+              <path d="M11 15c0-1 2.5-2 2.5-2S16 12 16 11"></path>
+              <path d="M11 18c0-1-1.5-1.5-1.5-1.5S8 16 8 15.5"></path>
+              <path d="M11 18c0-1 1.5-1.5 1.5-1.5S14 16 14 15.5"></path>
+            </svg>
+          </div>
+          <div className="shell">
+            <div className="stats-grid">
+              {companyStats.map((stat, index) => {
+                const Icon = iconMap[stat.icon] || Star
+                return (
+                  <Reveal className="stats-card" delay={index * 0.08} key={stat.id}>
+                    <div className="stats-icon-wrap">
+                      <Icon size={28} />
+                    </div>
+                    <strong>{stat.value}</strong>
+                    <h3>{stat.label}</h3>
+                    <p>{stat.copy}</p>
+                  </Reveal>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-shell section-testimonials">
           <div className="shell">
             <Reveal>
               <SectionHeading
-                eyebrow="Operational Gallery"
-                title="From farm to warehouse, quality you can see"
-                description="A closer look at our sourcing, processing, and distribution operations — because transparency builds trust."
+                eyebrow="CUSTOMER FEEDBACK"
+                title="What Our Clients Say"
+                align="center"
               />
             </Reveal>
 
-            <Reveal delay={0.12}>
-              <GalleryLightbox
-                items={galleryItems}
-                openIndex={lightboxIndex}
-                onClose={() => setLightboxIndex(-1)}
-                onOpen={setLightboxIndex}
-              />
-            </Reveal>
+            <div className="testimonial-grid">
+              {testimonials.map((test, index) => (
+                <Reveal className="testimonial-card" delay={index * 0.12} key={test.id}>
+                  <div className="testimonial-avatar">
+                    <img src={test.avatar} alt={test.name} />
+                  </div>
+                  <div className="testimonial-stars">
+                    {[...Array(test.stars)].map((_, i) => (
+                      <Star key={i} size={14} fill="var(--gold)" color="var(--gold)" />
+                    ))}
+                  </div>
+                  <p className="testimonial-copy">{test.copy}</p>
+                  <h4 className="testimonial-name">{test.name}</h4>
+                  <span className="testimonial-role">{test.role}</span>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -257,28 +321,81 @@ function App() {
       </main>
 
       <footer className="site-footer">
-        <div className="shell footer-grid">
-          <div>
+        <div className="shell footer-columns">
+          <div className="footer-col footer-col-brand">
             <a className="brand footer-brand" href="#overview">
               <span className="brand-mark">SS</span>
               <span className="brand-copy">
                 <strong>Savana Sips</strong>
-                <span>Premium Coffee Supply for U.S. Wholesale Buyers</span>
+                <span>Premium Coffee Supply</span>
               </span>
             </a>
+            <p className="footer-tagline">
+              Specialty-grade Kenyan coffee for wholesale buyers across North America and Europe. Origin-led quality, export-ready logistics.
+            </p>
           </div>
 
-          <nav className="footer-links" aria-label="Footer navigation">
-            {navLinks.map((link) => (
-              <a key={link.id} href={link.href}>
-                {link.label}
-              </a>
-            ))}
-          </nav>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Working Hours</h4>
+            <ul className="footer-hours">
+              <li>
+                <span className="footer-hours-day">Monday – Friday</span>
+                <span className="footer-hours-time">08:00 am – 06:00 pm</span>
+              </li>
+              <li>
+                <span className="footer-hours-day">Saturday</span>
+                <span className="footer-hours-time">09:00 am – 01:00 pm</span>
+              </li>
+              <li className="footer-hours-closed">Sunday Closed</li>
+            </ul>
+          </div>
 
-          <p className="footer-note">
-            © 2026 Savana Sips. Premium Specialty Coffee Supply.
-          </p>
+          <div className="footer-col">
+            <h4 className="footer-col-title">Contact Us</h4>
+            <ul className="footer-contact">
+              <li>
+                <MapPin size={16} className="footer-contact-icon" />
+                <div>
+                  <span className="footer-contact-label">Location :</span>
+                  <span>Nairobi, Kenya</span>
+                </div>
+              </li>
+              <li>
+                <Mail size={16} className="footer-contact-icon" />
+                <div>
+                  <span className="footer-contact-label">Email Address :</span>
+                  <span>hello@savanasips.com</span>
+                </div>
+              </li>
+              <li>
+                <Phone size={16} className="footer-contact-icon" />
+                <div>
+                  <span className="footer-contact-label">Phone Number :</span>
+                  <span>+254 700 123 456</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h4 className="footer-col-title">Quick Links</h4>
+            <nav className="footer-nav-links" aria-label="Footer navigation">
+              {navLinks.map((link) => (
+                <a key={link.id} href={link.href}>
+                  {link.label}
+                </a>
+              ))}
+              <a href="#inquiry">Wholesale Inquiry</a>
+            </nav>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <div className="shell">
+            <p className="footer-note">
+              © 2026 Savana Sips. All Rights Reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>

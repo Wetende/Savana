@@ -13,22 +13,27 @@ function SplitHeadline({ text, active }) {
   return (
     <h1 className={`hero-title ${active ? 'is-active' : ''}`} aria-label={text}>
       {words.map((word, wordIndex) => (
-        <span className="split-word" key={`${word}-${wordIndex}`}>
-          {[...word].map((char) => {
-            const currentIndex = charIndex
-            charIndex += 1
+        <span key={`${word}-${wordIndex}`} style={{ display: 'contents' }}>
+          <span className="split-word">
+            {[...word].map((char) => {
+              const currentIndex = charIndex
+              charIndex += 1
 
-            return (
-              <span
-                aria-hidden="true"
-                className="split-char"
-                key={`${char}-${currentIndex}`}
-                style={{ '--char-index': currentIndex }}
-              >
-                {char}
-              </span>
-            )
-          })}
+              return (
+                <span
+                  aria-hidden="true"
+                  className="split-char"
+                  key={`${char}-${currentIndex}`}
+                  style={{ '--char-index': currentIndex }}
+                >
+                  {char}
+                </span>
+              )
+            })}
+          </span>
+          {(wordIndex + 1) % 2 === 0 && wordIndex !== words.length - 1 && (
+            <div key={`br-${wordIndex}`} style={{ width: '100%', height: 0 }} />
+          )}
         </span>
       ))}
     </h1>

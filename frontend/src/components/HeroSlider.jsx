@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, ChartColumnIncreasing, ShieldCheck } from 'lucide-react'
+import { ChevronRight, ChartColumnIncreasing, ShieldCheck } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import { A11y, Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -46,26 +46,20 @@ function HeroSlider({ slides }) {
                   <div className="hero-copy">
                     <p className="eyebrow">{slide.eyebrow}</p>
                     <SplitHeadline text={slide.title} active={active} />
-                    <p className="hero-description">{slide.copy}</p>
-
-                    <div className="hero-highlights">
-                      {slide.metrics.map((metric) => (
-                        <span key={metric}>{metric}</span>
-                      ))}
-                    </div>
 
                     <div className="hero-actions">
                       <a className="button button-primary" href="#inquiry">
-                        Request Wholesale Pricing
-                        <ArrowRight size={18} />
+                        Request Pricing
+                        <ChevronRight size={16} />
                       </a>
                       <a className="button button-outline" href="#coffee-specs">
-                        View Coffee Specs
+                        Our Coffees
+                        <ChevronRight size={16} />
                       </a>
                     </div>
                   </div>
 
-                  <aside className="hero-aside">
+                  <aside className="hero-aside" style={{ display: 'none' }}>
                     <div className="hero-note">
                       <span className="hero-note-icon">
                         <ShieldCheck size={18} />
@@ -94,10 +88,6 @@ function HeroSlider({ slides }) {
 
       <div className="shell hero-bottom">
         <div className="hero-pagination" />
-        <p className="hero-bottom-copy">
-          Savana Sips positions premium origin coffee for U.S. wholesale growth, with Kenyan
-          provenance used as a supporting proof point rather than the entire pitch.
-        </p>
       </div>
     </section>
   )
