@@ -4,7 +4,7 @@ Savana is a premium coffee project with a dedicated frontend in `frontend/` and 
 
 ## Project Structure
 
-- `frontend/`: React + Vite + JavaScript landing page
+- `frontend/`: React + Vite + JavaScript 
 - `backend/`: Django + MySQL application
 
 ## Tech Stack
@@ -13,9 +13,7 @@ Savana is a premium coffee project with a dedicated frontend in `frontend/` and 
 - Backend: Django
 - Database: MySQL
 
-## Frontend
-
-The current frontend focuses on a premium wholesale coffee landing experience, while the backend is structured around Django and MySQL.
+L.
 
 ## Getting Started
 

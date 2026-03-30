@@ -66,12 +66,19 @@ function App() {
               const Icon = iconMap[point.icon]
 
               return (
-                <Reveal className="trust-card" delay={index * 0.08} key={point.id}>
-                  <span className="trust-icon">
-                    <Icon size={18} />
-                  </span>
-                  <h3>{point.title}</h3>
-                  <p>{point.description}</p>
+                <Reveal 
+                  className="trust-card" 
+                  delay={index * 0.08} 
+                  key={point.id}
+                  style={{ backgroundImage: `url(${point.bgImage})` }}
+                >
+                  <div className="trust-card-inner">
+                    <span className="trust-icon">
+                      <Icon size={40} strokeWidth={1.5} />
+                    </span>
+                    <h3>{point.title}</h3>
+                    <p className="trust-desc">{point.description}</p>
+                  </div>
                 </Reveal>
               )
             })}

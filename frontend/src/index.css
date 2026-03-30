@@ -600,7 +600,6 @@ button {
 }
 
 .hero-note-icon,
-.trust-icon,
 .benefit-icon {
   width: 2.4rem;
   height: 2.4rem;
@@ -678,18 +677,62 @@ button {
 
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem; /* Space between cards */
+  width: 66.666%;
+  margin: 0 auto;
 }
 
 .trust-card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.4rem;
-  background: var(--surface);
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+  border: none;
+  padding: 15px; /* Margin to inset border */
+  aspect-ratio: 1.15; /* Matching first image proportions */
+  overflow: hidden;
+  color: #fff;
 }
 
-.trust-card h3,
+.trust-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 12, 15, 0.85); /* Dark overlay */
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.trust-card:hover::before {
+  background: rgba(9, 12, 15, 0.75);
+}
+
+.trust-card-inner {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(193, 153, 119, 0.3);
+  border-radius: 4px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  transition: border-color 0.3s ease;
+}
+
+.trust-card:hover .trust-card-inner {
+  border-color: rgba(193, 153, 119, 0.6);
+}
+
+.trust-icon {
+  color: #fff;
+  margin-bottom: 1.25rem;
+  display: inline-flex;
+}
+
 .spec-card h3,
 .workflow-card h3,
 .benefit-card h3,
@@ -698,6 +741,24 @@ button {
   font-family: var(--font-heading);
   line-height: 1.1;
   letter-spacing: -0.01em;
+}
+
+.trust-card h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.trust-desc {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  line-height: 1.5;
+  opacity: 0.9;
 }
 
 /* ===== ABOUT SECTION (Kaffen-style) ===== */
@@ -1713,7 +1774,6 @@ button {
   .inquiry-layout {
     grid-template-columns: 1fr;
   }
-
   .menu-grid,
   .impact-grid,
   .trust-grid,
@@ -1765,7 +1825,6 @@ button {
   .button {
     width: 100%;
   }
-
   .menu-grid,
   .impact-grid,
   .trust-grid,

@@ -26,4 +26,7 @@ dist-ssr
 .env
 .playwright-cli
 output
-
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3

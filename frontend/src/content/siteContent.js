@@ -62,24 +62,21 @@ export const trustPoints = [
     title: 'Specialty Grade',
     description: 'AA and high-altitude Arabica for premium wholesale programs.',
     icon: 'badge',
+    bgImage: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 'workflow',
     title: 'Export Ready',
     description: 'Streamlined sourcing and lot-prep for wholesale buyers.',
     icon: 'container',
-  },
-  {
-    id: 'story',
-    title: 'Origin Focused',
-    description: 'Kenyan provenance centered on quality and consistency.',
-    icon: 'leaf',
+    bgImage: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 'response',
     title: 'Fast Response',
     description: 'Pricing and samples within one business cycle.',
     icon: 'timer',
+    bgImage: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80',
   },
 ]
 
