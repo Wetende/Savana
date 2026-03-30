@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from apps.core.emailing import send_system_email
-
 from .models import Address, Order, OrderItem
 
 
@@ -39,7 +37,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only_fields = ["line_total"]
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderReadSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, required=False)
     billing_address = AddressSerializer(read_only=True)
     shipping_address = AddressSerializer(read_only=True)
@@ -87,32 +85,59 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["order_number", "created_at"]
 
-    def _sync_items(self, order, items_data):
-        order.items.all().delete()
-        for item_data in items_data:
-            OrderItem.objects.create(order=order, **item_data)
-        order.recalculate_totals()
+class OrderWriteSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, required=False)
+    billing_address_id = serializers.PrimaryKeyRelatedField(
+        source="billing_address",
+        queryset=Address.objects.all(),
+        write_only=True,
+        allow_null=True,
+        required=False,
+    )
+    shipping_address_id = serializers.PrimaryKeyRelatedField(
+        source="shipping_address",
+        queryset=Address.objects.all(),
+        write_only=True,
+        allow_null=True,
+        required=False,
+    )
 
-    def create(self, validated_data):
-        items_data = validated_data.pop("items", [])
-        order = Order.objects.create(**validated_data)
-        self._sync_items(order, items_data)
-        return order
-
-    def update(self, instance, validated_data):
-        items_data = validated_data.pop("items", None)
-        previous_status = instance.status
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
-        instance.save()
-        if items_data is not None:
-            self._sync_items(instance, items_data)
-        else:
-            instance.recalculate_totals()
-        if previous_status != instance.status and instance.customer and instance.customer.email:
-            send_system_email(
-                subject=f"Order {instance.order_number} updated",
-                message=f"Your order is now marked as {instance.status}.",
-                recipient_list=[instance.customer.email],
-            )
-        return instance
+    class Meta:
+        model = Order
+        fields = [
+            "customer",
+            "quote",
+            "billing_address_id",
+            "shipping_address_id",
+            "currency",
+            "subtotal_amount",
+            "tax_amount",
+            "shipping_amount",
+            "discount_amount",
+            "total_amount",
+            "shipping_method",
+            "shipping_quote_reference",
+            "tracking_number",
+            "tracking_url",
+            "status",
+            "payment_status",
+            "notes",
+            "items",
+        ]
+        extra_kwargs = {
+            "customer": {"required": False, "allow_null": True},
+            "quote": {"required": False, "allow_null": True},
+            "currency": {"required": False},
+            "subtotal_amount": {"required": False},
+            "tax_amount": {"required": False},
+            "shipping_amount": {"required": False},
+            "discount_amount": {"required": False},
+            "total_amount": {"required": False},
+            "shipping_method": {"required": False},
+            "shipping_quote_reference": {"required": False},
+            "tracking_number": {"required": False},
+            "tracking_url": {"required": False},
+            "status": {"required": False},
+            "payment_status": {"required": False},
+            "notes": {"required": False},
+        }

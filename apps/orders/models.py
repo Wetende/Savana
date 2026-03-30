@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 
+from apps.core.model_mixins import ReferenceCodeMixin
 from apps.core.models import TimeStampedModel
 
 
@@ -29,7 +30,8 @@ class Address(TimeStampedModel):
         return f"{self.full_name} - {self.city}"
 
 
-class Order(TimeStampedModel):
+class Order(ReferenceCodeMixin, TimeStampedModel):
+    reference_prefix = "ORD"
     STATUS_CHOICES = [
         ("draft", "Draft"),
         ("pending", "Pending"),
@@ -93,14 +95,18 @@ class Order(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if not self.order_number:
-            self.order_number = f"ORD-{self.created_at:%Y%m%d}-{self.pk}"
+        if self.ensure_reference_code("order_number"):
             super().save(update_fields=["order_number"])
 
     def recalculate_totals(self, save=True):
         subtotal = sum((item.line_total for item in self.items.all()), Decimal("0.00"))
         self.subtotal_amount = subtotal
-        self.total_amount = subtotal + self.tax_amount + self.shipping_amount - self.discount_amount
+        self.total_amount = (
+            subtotal
+            + Decimal(self.tax_amount)
+            + Decimal(self.shipping_amount)
+            - Decimal(self.discount_amount)
+        )
         if save:
             self.save(update_fields=["subtotal_amount", "total_amount"])
         return self.total_amount

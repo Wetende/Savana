@@ -74,7 +74,7 @@ def test_review_endpoints_cover_retrieve_update_and_delete(staff_client, custome
     review_id = create_response.data["id"]
 
     assert staff_client.get(f"/api/v1/reviews/{review_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/reviews/{review_id}/",
         {"title": "Updated by staff"},
         format="json",

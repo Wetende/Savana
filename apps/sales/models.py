@@ -4,6 +4,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 
+from apps.core.model_mixins import ReferenceCodeMixin
 from apps.core.models import TimeStampedModel
 
 
@@ -63,7 +64,8 @@ class InquiryItem(TimeStampedModel):
         return f"{target} x {self.requested_quantity}"
 
 
-class Quote(TimeStampedModel):
+class Quote(ReferenceCodeMixin, TimeStampedModel):
+    reference_prefix = "QT"
     STATUS_CHOICES = [
         ("draft", "Draft"),
         ("sent", "Sent"),
@@ -109,8 +111,7 @@ class Quote(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if not self.reference:
-            self.reference = f"QT-{self.created_at:%Y%m%d}-{self.pk}"
+        if self.ensure_reference_code("reference"):
             super().save(update_fields=["reference"])
 
 

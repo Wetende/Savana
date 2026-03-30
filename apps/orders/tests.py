@@ -57,7 +57,7 @@ def test_order_endpoints_support_address_crud_staff_order_crud_and_total_recalcu
 
     assert customer_client.get("/api/v1/orders/addresses/").status_code == 200
     assert customer_client.get(f"/api/v1/orders/addresses/{address_id}/").status_code == 200
-    assert customer_client.patch(
+    assert customer_client.put(
         f"/api/v1/orders/addresses/{address_id}/",
         {"city": "Austin"},
         format="json",
@@ -92,7 +92,7 @@ def test_order_endpoints_support_address_crud_staff_order_crud_and_total_recalcu
     assert customer_client.get(f"/api/v1/orders/{order_id}/").status_code == 200
     assert staff_client.get(f"/api/v1/orders/{order_id}/").status_code == 200
 
-    update_response = staff_client.patch(
+    update_response = staff_client.put(
         f"/api/v1/orders/{order_id}/",
         {
             "shipping_amount": "15.00",

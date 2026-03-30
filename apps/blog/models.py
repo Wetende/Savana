@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from django.utils.text import slugify
 
+from apps.core.model_mixins import AutoSlugMixin
 from apps.core.models import TimeStampedModel
 
 
-class Category(TimeStampedModel):
+class Category(AutoSlugMixin, TimeStampedModel):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
 
@@ -15,15 +15,14 @@ class Category(TimeStampedModel):
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.ensure_slug()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
-class Tag(TimeStampedModel):
+class Tag(AutoSlugMixin, TimeStampedModel):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
 
@@ -31,19 +30,19 @@ class Tag(TimeStampedModel):
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.ensure_slug()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
-class Post(TimeStampedModel):
+class Post(AutoSlugMixin, TimeStampedModel):
     STATUS_CHOICES = [
         ("draft", "Draft"),
         ("published", "Published"),
     ]
+    slug_source_field = "title"
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="blog_posts")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="posts", null=True, blank=True)
@@ -62,8 +61,7 @@ class Post(TimeStampedModel):
         ordering = ["-published_at", "-created_at"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        self.ensure_slug()
         if self.status == "published" and self.published_at is None:
             self.published_at = timezone.now()
         super().save(*args, **kwargs)

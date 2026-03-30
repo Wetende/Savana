@@ -115,7 +115,7 @@ def test_catalog_endpoints_support_public_reads_and_staff_crud(staff_client):
     assert public_client.get("/api/v1/catalog/offers/").status_code == 200
     assert staff_client.get(f"/api/v1/catalog/offers/{offer_id}/").status_code == 200
 
-    patch_product = staff_client.patch(
+    patch_product = staff_client.put(
         f"/api/v1/catalog/products/{product_slug}/",
         {"short_description": "Updated copy"},
         format="json",
@@ -124,7 +124,7 @@ def test_catalog_endpoints_support_public_reads_and_staff_crud(staff_client):
 
     assert staff_client.get("/api/v1/catalog/inventory/").status_code == 200
     assert staff_client.get(f"/api/v1/catalog/inventory/{inventory_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/catalog/inventory/{inventory_id}/",
         {"reserved_quantity": "7.00"},
         format="json",

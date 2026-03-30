@@ -77,7 +77,7 @@ def test_blog_endpoints_support_public_reads_and_staff_crud(staff_client, staff_
     assert public_client.get("/api/v1/blog/posts/").status_code == 200
     assert public_client.get(f"/api/v1/blog/posts/{slug}/").status_code == 200
 
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/blog/posts/{slug}/",
         {"summary": "Updated summary"},
         format="json",

@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from .models import CustomerProfile
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -51,37 +51,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             "profile",
         ]
 
-    def create(self, validated_data):
-        profile_data = validated_data.pop("profile", {})
-        user = User.objects.create_user(
-            username=validated_data["username"],
-            email=validated_data.get("email", ""),
-            first_name=validated_data.get("first_name", ""),
-            last_name=validated_data.get("last_name", ""),
-            password=validated_data["password"],
-        )
-        profile = user.profile
-        for field, value in profile_data.items():
-            setattr(profile, field, value)
-        profile.save()
-        return user
-
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
-    profile = CustomerProfileSerializer()
+    profile = CustomerProfileSerializer(required=False)
 
     class Meta:
         model = User
         fields = ["first_name", "last_name", "email", "profile"]
-
-    def update(self, instance, validated_data):
-        profile_data = validated_data.pop("profile", {})
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
-        instance.save()
-
-        profile = instance.profile
-        for field, value in profile_data.items():
-            setattr(profile, field, value)
-        profile.save()
-        return instance

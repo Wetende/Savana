@@ -1,11 +1,11 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.text import slugify
 
+from apps.core.model_mixins import AutoSlugMixin
 from apps.core.models import TimeStampedModel
 
 
-class Category(TimeStampedModel):
+class Category(AutoSlugMixin, TimeStampedModel):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.TextField(blank=True)
@@ -15,15 +15,14 @@ class Category(TimeStampedModel):
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.ensure_slug()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
-class Product(TimeStampedModel):
+class Product(AutoSlugMixin, TimeStampedModel):
     STATUS_CHOICES = [
         ("draft", "Draft"),
         ("published", "Published"),
@@ -43,8 +42,7 @@ class Product(TimeStampedModel):
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.ensure_slug()
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -38,7 +38,7 @@ def test_newsletter_endpoints_cover_staff_management(staff_client):
 
     assert staff_client.get("/api/v1/newsletter/").status_code == 200
     assert staff_client.get(f"/api/v1/newsletter/{subscription_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/newsletter/{subscription_id}/",
         {"status": "unsubscribed"},
         format="json",

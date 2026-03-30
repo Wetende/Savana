@@ -41,7 +41,7 @@ def test_payment_endpoints_cover_payments_attempts_and_webhook(staff_client, cus
     assert customer_client.get("/api/v1/payments/").status_code == 200
     assert staff_client.get(f"/api/v1/payments/{payment_id}/").status_code == 200
 
-    patch_payment = staff_client.patch(
+    patch_payment = staff_client.put(
         f"/api/v1/payments/{payment_id}/",
         {"status": "processing"},
         format="json",
@@ -63,7 +63,7 @@ def test_payment_endpoints_cover_payments_attempts_and_webhook(staff_client, cus
 
     assert staff_client.get("/api/v1/payments/attempts/").status_code == 200
     assert staff_client.get(f"/api/v1/payments/attempts/{attempt_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/payments/attempts/{attempt_id}/",
         {"status": "succeeded"},
         format="json",

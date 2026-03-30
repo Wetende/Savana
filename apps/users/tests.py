@@ -37,7 +37,7 @@ def test_register_and_me_flow():
     assert me_response.status_code == 200
     assert me_response.data["email"] == "buyer@example.com"
 
-    patch_response = client.patch(
+    patch_response = client.put(
         "/api/v1/auth/me/",
         {
             "first_name": "Updated",
@@ -50,6 +50,7 @@ def test_register_and_me_flow():
     assert patch_response.status_code == 200
     assert patch_response.data["first_name"] == "Updated"
     assert patch_response.data["profile"]["company_name"] == "Updated Imports"
+    assert client.patch("/api/v1/auth/me/", {"first_name": "Blocked"}, format="json").status_code == 405
 
     refresh_response = client.post(
         "/api/v1/auth/token/refresh/",

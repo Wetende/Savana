@@ -109,7 +109,7 @@ def test_sales_endpoints_cover_guest_quote_access_and_staff_management(staff_cli
 
     assert staff_client.get("/api/v1/sales/inquiries/").status_code == 200
     assert staff_client.get(f"/api/v1/sales/inquiries/{inquiry_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/sales/inquiries/{inquiry_id}/",
         {"message": "Reviewed by sales"},
         format="json",
@@ -139,7 +139,7 @@ def test_sales_endpoints_cover_guest_quote_access_and_staff_management(staff_cli
 
     assert staff_client.get("/api/v1/sales/quotes/").status_code == 200
     assert staff_client.get(f"/api/v1/sales/quotes/{quote_id}/").status_code == 200
-    assert staff_client.patch(
+    assert staff_client.put(
         f"/api/v1/sales/quotes/{quote_id}/",
         {"notes": "Updated note"},
         format="json",
@@ -148,9 +148,10 @@ def test_sales_endpoints_cover_guest_quote_access_and_staff_management(staff_cli
     guest_detail = guest_client.get(f"/api/v1/sales/guest-quotes/{reference}/{token}/")
     assert guest_detail.status_code == 200
 
-    guest_accept = guest_client.post(f"/api/v1/sales/guest-quotes/{reference}/{token}/accept/", {}, format="json")
+    guest_accept = guest_client.put(f"/api/v1/sales/guest-quotes/{reference}/{token}/", {}, format="json")
     assert guest_accept.status_code == 200
     assert guest_accept.data["status"] == "accepted"
+    assert guest_client.post(f"/api/v1/sales/guest-quotes/{reference}/{token}/accept/", {}, format="json").status_code == 404
 
     convert_response = staff_client.post(
         f"/api/v1/sales/quotes/{quote_id}/convert_to_order/",
